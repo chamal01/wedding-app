@@ -69,16 +69,16 @@ const customStyles = `
 
 // --- DEFAULT DATA ---
 const defaultData = {
-  groomName: "චමල්",
-  brideName: "සඳුනි",
+  groomName: "චමල් අධීකාරමි",
+  brideName: "සඳුනි රත්නායක",
   welcomeText: "අපගේ විවාහ මංගල්‍යයට සාදරයෙන් පිළිගනිමු",
   date: "2026 මැයි 28",
   time: "උදෑසන 9.00 සිට",
   venueName: "Royal Kandyan Hotel",
   venueAddress: "පේරාදෙණිය පාර, මහනුවර",
   venueMapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.60563467645!2d80.56214539151525!3d7.294544458316335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk",
-  parentsGroom: "සුනිල් රත්නායක සහ මාලනී රත්නායක",
-  parentsBride: "සරත් පෙරේරා සහ චන්දිමා පෙරේරා",
+  parentsGroom: "රේණුකා සුභාවික්‍රම / නන්දසේන අදිකාරම්",
+  parentsBride: "රත්නායක මහත්මිය",
   invitationMessage: "අපගේ දරුවන්ගේ ජීවිතයේ මෙම සුන්දර අවස්ථාවට ආශිර්වාද කිරීම සඳහා ඔබගේ පැමිණීම ගෞරවයෙන් අපේක්ෂා කරමු.",
   timeline: [
     { id: 1, time: "09:15 AM", title: "නැකත් වේලාව", desc: "සුබ මොහොතින් මංගල්‍යය ආරම්භ කිරීම", icon: "Clock" },

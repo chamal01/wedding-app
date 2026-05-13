@@ -4,30 +4,28 @@ import {
   Settings, Users, Download, Lock, ChevronRight, Menu, X, ArrowLeft
 } from 'lucide-react';
 
-// 1. Only import Firebase functions ONCE
+// Firebase imports
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
 
-// 2. YOUR exact Firebase Configuration
+// --- YOUR REAL FIREBASE SETUP ---
 const firebaseConfig = {
-  apiKey: "AIzaSyBePGYeMJlHiJ2kjuLXlZmtV35I6zVj6YY",
-  authDomain: "wedding-app-acf0d.firebaseapp.com",
-  projectId: "wedding-app-acf0d",
-  storageBucket: "wedding-app-acf0d.firebasestorage.app",
-  messagingSenderId: "887819994324",
-  appId: "1:887819994324:web:200904e243ba2ef2402741"
+  apiKey: "AIzaSyAm7yNaPzf6SurRowMVE75rC-NhzR2PcR0",
+  authDomain: "weding-21323.firebaseapp.com",
+  projectId: "weding-21323",
+  storageBucket: "weding-21323.firebasestorage.app",
+  messagingSenderId: "138014925917",
+  appId: "1:138014925917:web:2b37a51df8b61a823559b4"
 };
 
-// 3. Initialize Firebase ONCE
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const customAppId = "wedding-app-acf0d";
+const customAppId = "weding-21323";
 
-// --- INJECT FONTS & CUSTOM STYLES ---
-const style = document.createElement('style');
-style.innerHTML = `
+// --- CUSTOM STYLES ---
+const customStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
   
   body {
@@ -52,12 +50,6 @@ style.innerHTML = `
   .border-gold { border-color: #d4af37; }
   .text-gold { color: #d4af37; }
   
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: #fdfbf7; }
-  ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #b38728; }
-  
   /* Floral Pattern Mask */
   .floral-mask {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -74,8 +66,6 @@ style.innerHTML = `
     transform: translateY(0);
   }
 `;
-document.head.appendChild(style);
-
 
 // --- DEFAULT DATA ---
 const defaultData = {
@@ -105,35 +95,6 @@ const defaultData = {
     "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=1000&auto=format&fit=crop"
   ]
 };
-
-// --- CUSTOM HOOKS ---
-function useIntersectionObserver(options = {}) {
-  const elementsRef = useRef([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.1, ...options });
-
-    elementsRef.current.forEach((el) => {
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const setRef = (el) => {
-    if (el && !elementsRef.current.includes(el)) {
-      elementsRef.current.push(el);
-    }
-  };
-
-  return setRef;
-}
 
 // --- COMPONENTS ---
 
@@ -175,6 +136,7 @@ const HeroSection = ({ isOpened, setIsOpened, data }) => {
     <div className="relative h-[100dvh] w-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
       
+      {/* Light Cream Left Door */}
       <div className={`absolute top-0 left-0 w-1/2 h-full transition-transform duration-[1500ms] ease-in-out z-20 flex justify-end overflow-hidden ${isOpened ? '-translate-x-full' : 'translate-x-0'}`}>
         <div className="w-[200%] h-full bg-[#fdfbf7] relative">
           <div className="absolute inset-0 floral-mask opacity-40"></div>
@@ -188,6 +150,7 @@ const HeroSection = ({ isOpened, setIsOpened, data }) => {
         </div>
       </div>
 
+      {/* Light Cream Right Door */}
       <div className={`absolute top-0 right-0 w-1/2 h-full transition-transform duration-[1500ms] ease-in-out z-20 flex justify-start overflow-hidden ${isOpened ? 'translate-x-full' : 'translate-x-0'}`}>
         <div className="w-[200%] h-full bg-[#fdfbf7] relative -left-full">
            <div className="absolute inset-0 floral-mask opacity-40"></div>
@@ -303,7 +266,6 @@ const TimelineSection = ({ data, setRef }) => {
                        <p className="text-gray-600">{item.desc}</p>
                     </div>
                   </div>
-
                   <div className="hidden md:block w-[45%]"></div>
                 </div>
               );
@@ -433,13 +395,7 @@ const RSVPSection = ({ navigateTo }) => {
 };
 
 const RSVPFormPage = ({ navigateTo, user }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    guests: '1',
-    attending: 'yes',
-    wishes: ''
-  });
+  const [formData, setFormData] = useState({ name: '', phone: '', guests: '1', attending: 'yes', wishes: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -447,24 +403,19 @@ const RSVPFormPage = ({ navigateTo, user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setError("කරුණාකර මොහොතක් රැඳී සිටින්න. (Connecting to database...)");
+      setError("කරුණාකර මොහොතක් රැඳී සිටින්න. (Connecting...)");
       return;
     }
     setLoading(true);
     setError('');
 
     try {
-      // Setup the reference path to your Firestore DB
       const rsvpRef = collection(db, 'artifacts', customAppId, 'public', 'data', 'rsvps');
-      await addDoc(rsvpRef, {
-        ...formData,
-        timestamp: new Date().toISOString(),
-        userId: user.uid
-      });
+      await addDoc(rsvpRef, { ...formData, timestamp: new Date().toISOString(), userId: user.uid });
       setSuccess(true);
     } catch (err) {
       console.error(err);
-      setError("දෝෂයක් මතු විය. කරුණාකර නැවත උත්සාහ කරන්න. (Error submitting form)");
+      setError("දෝෂයක් මතු විය. කරුණාකර නැවත උත්සාහ කරන්න.");
     } finally {
       setLoading(false);
     }
@@ -491,52 +442,33 @@ const RSVPFormPage = ({ navigateTo, user }) => {
   return (
     <div className="min-h-screen bg-[#fdfbf7] py-12 px-4 relative">
        <div className="absolute top-0 left-0 w-full h-64 bg-[#1a1a1a]"></div>
-       
        <button onClick={() => navigateTo('home')} className="absolute top-6 left-6 text-white hover:text-gold flex items-center transition-colors z-10">
           <ArrowLeft className="w-5 h-5 mr-2" /> ආපසු
        </button>
-
        <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10 mt-10 border border-gold/20">
           <div className="bg-gold-gradient p-8 text-center text-white relative">
              <div className="absolute inset-0 floral-mask opacity-20"></div>
              <h2 className="text-3xl font-bold relative z-10">පැමිණීම තහවුරු කිරීම (RSVP)</h2>
              <p className="opacity-90 mt-2 relative z-10">කරුණාකර ඔබගේ විස්තර පහතින් ඇතුළත් කරන්න</p>
           </div>
-
           <form onSubmit={handleSubmit} className="p-8 space-y-6">
             {error && <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm">{error}</div>}
-            
             <div>
               <label className="block text-gray-700 font-bold mb-2">සම්පූර්ණ නම *</label>
-              <input 
-                type="text" required 
-                value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50"
-                placeholder="ඔබගේ නම"
-              />
+              <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50" placeholder="ඔබගේ නම" />
             </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-gray-700 font-bold mb-2">දුරකථන අංකය *</label>
-                <input 
-                  type="tel" required 
-                  value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50"
-                  placeholder="07X XXX XXXX"
-                />
+                <input type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50" placeholder="07X XXX XXXX" />
               </div>
               <div>
                 <label className="block text-gray-700 font-bold mb-2">සහභාගී වන සංඛ්‍යාව *</label>
-                <select 
-                  value={formData.guests} onChange={e => setFormData({...formData, guests: e.target.value})}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50"
-                >
+                <select value={formData.guests} onChange={e => setFormData({...formData, guests: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50">
                   {[1,2,3,4,5,6].map(num => <option key={num} value={num}>{num}</option>)}
                 </select>
               </div>
             </div>
-
             <div>
               <label className="block text-gray-700 font-bold mb-2">පැමිණීම *</label>
               <div className="flex space-x-6">
@@ -550,25 +482,12 @@ const RSVPFormPage = ({ navigateTo, user }) => {
                 </label>
               </div>
             </div>
-
             <div>
               <label className="block text-gray-700 font-bold mb-2">සුබපැතුම් / පණිවිඩයක් (විකල්ප)</label>
-              <textarea 
-                rows="4"
-                value={formData.wishes} onChange={e => setFormData({...formData, wishes: e.target.value})}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50 resize-none"
-                placeholder="යුවළට ඔබගේ සුබපැතුම්..."
-              ></textarea>
+              <textarea rows="4" value={formData.wishes} onChange={e => setFormData({...formData, wishes: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent outline-none bg-gray-50 resize-none" placeholder="යුවළට ඔබගේ සුබපැතුම්..."></textarea>
             </div>
-
-            <button 
-              type="submit" 
-              disabled={loading}
-              className={`w-full py-4 bg-gold-gradient text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all flex justify-center items-center ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            >
-              {loading ? (
-                 <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : 'තහවුරු කරන්න'}
+            <button type="submit" disabled={loading} className={`w-full py-4 bg-gold-gradient text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all flex justify-center items-center ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}>
+              {loading ? <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div> : 'තහවුරු කරන්න'}
             </button>
           </form>
        </div>
@@ -582,7 +501,7 @@ const AdminLogin = ({ setAdminAuth, navigateTo }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === 'kandyan123') { // Admin password
+    if (password === 'kandyan123') { 
       setAdminAuth(true);
     } else {
       setError('මුරපදය වැරදියි (Invalid Password)');
@@ -596,21 +515,12 @@ const AdminLogin = ({ setAdminAuth, navigateTo }) => {
             <h2 className="text-2xl font-bold text-gray-800 flex items-center"><Lock className="mr-2 text-gold"/> Admin Panel</h2>
             <button onClick={() => navigateTo('home')} className="text-gray-500 hover:text-gray-800"><X /></button>
          </div>
-         <p className="text-sm text-gray-500 mb-6">Password: <code className="bg-gray-100 px-2 py-1 rounded">kandyan123</code></p>
+         <p className="text-sm text-gray-500 mb-6">Demo Password: <code className="bg-gray-100 px-2 py-1 rounded">kandyan123</code></p>
          
          <form onSubmit={handleLogin} className="space-y-4">
            {error && <p className="text-red-500 text-sm">{error}</p>}
-           <input 
-             type="password" 
-             value={password} 
-             onChange={e => setPassword(e.target.value)} 
-             placeholder="මුරපදය (Password)" 
-             className="w-full p-3 border rounded focus:ring-2 focus:ring-gold outline-none"
-             required
-           />
-           <button type="submit" className="w-full bg-gray-800 text-white p-3 rounded font-bold hover:bg-gray-900 transition-colors">
-             ඇතුල් වන්න (Login)
-           </button>
+           <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="මුරපදය (Password)" className="w-full p-3 border rounded focus:ring-2 focus:ring-gold outline-none" required />
+           <button type="submit" className="w-full bg-gray-800 text-white p-3 rounded font-bold hover:bg-gray-900 transition-colors">ඇතුල් වන්න (Login)</button>
          </form>
       </div>
     </div>
@@ -660,22 +570,10 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
       <div className="w-full md:w-64 bg-[#1a1a1a] text-white flex flex-col">
-        <div className="p-6 text-xl font-bold border-b border-gray-800 gold-gradient">
-          Wedding Admin
-        </div>
+        <div className="p-6 text-xl font-bold border-b border-gray-800 gold-gradient">Wedding Admin</div>
         <nav className="flex-1 p-4 space-y-2">
-          <button 
-            onClick={() => setActiveTab('rsvps')} 
-            className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'rsvps' ? 'bg-gold text-white' : 'hover:bg-gray-800'}`}
-          >
-            <Users className="w-5 h-5 mr-3" /> RSVPs
-          </button>
-          <button 
-            onClick={() => setActiveTab('settings')} 
-            className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'settings' ? 'bg-gold text-white' : 'hover:bg-gray-800'}`}
-          >
-            <Settings className="w-5 h-5 mr-3" /> Settings
-          </button>
+          <button onClick={() => setActiveTab('rsvps')} className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'rsvps' ? 'bg-gold text-white' : 'hover:bg-gray-800'}`}><Users className="w-5 h-5 mr-3" /> RSVPs</button>
+          <button onClick={() => setActiveTab('settings')} className={`w-full flex items-center p-3 rounded transition-colors ${activeTab === 'settings' ? 'bg-gold text-white' : 'hover:bg-gray-800'}`}><Settings className="w-5 h-5 mr-3" /> Settings</button>
         </nav>
         <div className="p-4 border-t border-gray-800 space-y-2">
           <button onClick={() => navigateTo('home')} className="w-full text-left p-2 text-gray-400 hover:text-white transition-colors">View Site</button>
@@ -688,11 +586,8 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
           <div>
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800">RSVP List</h2>
-              <button onClick={exportCSV} className="flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
-                <Download className="w-4 h-4 mr-2" /> Export CSV
-              </button>
+              <button onClick={exportCSV} className="flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"><Download className="w-4 h-4 mr-2" /> Export CSV</button>
             </div>
-
             <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
               {loading ? (
                 <div className="p-10 text-center text-gray-500">Loading data...</div>
@@ -703,11 +598,7 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-gray-50 border-b border-gray-200 text-gray-600 text-sm uppercase">
-                        <th className="p-4">Name</th>
-                        <th className="p-4">Phone</th>
-                        <th className="p-4">Guests</th>
-                        <th className="p-4">Status</th>
-                        <th className="p-4">Message</th>
+                        <th className="p-4">Name</th><th className="p-4">Phone</th><th className="p-4">Guests</th><th className="p-4">Status</th><th className="p-4">Message</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -716,11 +607,7 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
                           <td className="p-4 font-medium text-gray-800">{rsvp.name}</td>
                           <td className="p-4 text-gray-600">{rsvp.phone}</td>
                           <td className="p-4 text-gray-600">{rsvp.guests}</td>
-                          <td className="p-4">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${rsvp.attending === 'yes' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                              {rsvp.attending === 'yes' ? 'Attending' : 'Not Attending'}
-                            </span>
-                          </td>
+                          <td className="p-4"><span className={`px-3 py-1 rounded-full text-xs font-bold ${rsvp.attending === 'yes' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{rsvp.attending === 'yes' ? 'Attending' : 'Not Attending'}</span></td>
                           <td className="p-4 text-gray-600 text-sm max-w-xs truncate" title={rsvp.wishes}>{rsvp.wishes || '-'}</td>
                         </tr>
                       ))}
@@ -729,7 +616,6 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
                 </div>
               )}
             </div>
-            
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                  <h3 className="text-gray-500 text-sm font-bold uppercase mb-2">Total Responses</h3>
@@ -737,9 +623,7 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
                </div>
                <div className="bg-white p-6 rounded-xl shadow-sm border border-green-200">
                  <h3 className="text-green-600 text-sm font-bold uppercase mb-2">Total Attending (Guests)</h3>
-                 <p className="text-3xl font-bold text-green-700">
-                   {rsvps.filter(r => r.attending === 'yes').reduce((acc, curr) => acc + parseInt(curr.guests || 0), 0)}
-                 </p>
+                 <p className="text-3xl font-bold text-green-700">{rsvps.filter(r => r.attending === 'yes').reduce((acc, curr) => acc + parseInt(curr.guests || 0), 0)}</p>
                </div>
                <div className="bg-white p-6 rounded-xl shadow-sm border border-red-200">
                  <h3 className="text-red-600 text-sm font-bold uppercase mb-2">Not Attending</h3>
@@ -762,7 +646,7 @@ const AdminDashboard = ({ setAdminAuth, user, navigateTo }) => {
       </div>
     </div>
   );
-}
+};
 
 // --- MAIN APP COMPONENT ---
 
@@ -771,25 +655,39 @@ export default function App() {
   const [currentView, setCurrentView] = useState('home'); 
   const [isAdminAuth, setIsAdminAuth] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  
-  const setRef = useIntersectionObserver();
+  const elementsRef = useRef([]);
 
-  // Initialize Firebase Auth
   useEffect(() => {
-    const initAuth = async () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.1 });
+    elementsRef.current.forEach((el) => { if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, [currentView, isInviteOpen]);
+
+  const setRef = (el) => {
+    if (el && !elementsRef.current.includes(el)) elementsRef.current.push(el);
+  };
+
+  useEffect(() => {
+    const performAuth = async () => {
       try {
         await signInAnonymously(auth);
-      } catch (error) {
-        console.error("Auth Error:", error);
+      } catch (err) {
+        console.error("Firebase Auth Error:", err);
       }
     };
-    initAuth();
+    performAuth();
+    return onAuthStateChanged(auth, setUser);
+  }, []);
 
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
+  useEffect(() => {
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = customStyles;
+    document.head.appendChild(styleTag);
+    return () => { document.head.removeChild(styleTag); };
   }, []);
 
   useEffect(() => {
@@ -801,19 +699,14 @@ export default function App() {
     return () => { document.body.style.overflow = 'auto'; };
   }, [isInviteOpen, currentView]);
 
-  const navigateTo = (view) => {
-    setCurrentView(view);
-    window.scrollTo(0, 0);
-  };
+  const navigateTo = (view) => { setCurrentView(view); window.scrollTo(0, 0); };
 
   if (currentView === 'admin') {
     if (!isAdminAuth) return <AdminLogin setAdminAuth={setIsAdminAuth} navigateTo={navigateTo} />;
     return <AdminDashboard setAdminAuth={setIsAdminAuth} user={user} navigateTo={navigateTo} />;
   }
 
-  if (currentView === 'rsvp') {
-    return <RSVPFormPage navigateTo={navigateTo} user={user} />;
-  }
+  if (currentView === 'rsvp') return <RSVPFormPage navigateTo={navigateTo} user={user} />;
 
   return (
     <div className="w-full bg-[#fdfbf7]">
@@ -827,11 +720,7 @@ export default function App() {
         
         <footer className="bg-[#111] text-gray-500 py-8 text-center text-sm relative">
           <p>© {new Date().getFullYear()} {defaultData.groomName} & {defaultData.brideName}. All rights reserved.</p>
-          <button 
-            onClick={() => navigateTo('admin')}
-            className="absolute bottom-4 right-4 text-gray-700 hover:text-gold transition-colors"
-            title="Admin Login"
-          >
+          <button onClick={() => navigateTo('admin')} className="absolute bottom-4 right-4 text-gray-700 hover:text-gold transition-colors" title="Admin Login">
             <Lock className="w-4 h-4" />
           </button>
         </footer>

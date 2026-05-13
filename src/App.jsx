@@ -7,18 +7,26 @@ import {
   initializeApp 
 } from 'firebase/app';
 import { 
-  getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged 
+  getAuth, signInAnonymously, onAuthStateChanged 
 } from 'firebase/auth';
 import { 
   getFirestore, collection, doc, setDoc, getDoc, addDoc, onSnapshot, query, orderBy 
 } from 'firebase/firestore';
 
 // --- FIREBASE SETUP ---
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const firebaseConfig = {
+  apiKey: "AIzaSyAm7yNaPzf6SurRowMVE75rC-NhzR2PcR0",
+  authDomain: "weding-21323.firebaseapp.com",
+  projectId: "weding-21323",
+  storageBucket: "weding-21323.firebasestorage.app",
+  messagingSenderId: "138014925917",
+  appId: "1:138014925917:web:2b37a51df8b61a823559b4"
+};
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-wedding-app';
+const appId = "weding-21323";
 
 // --- INJECT FONTS & CUSTOM STYLES ---
 const style = document.createElement('style');
@@ -805,11 +813,7 @@ export default function App() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
+        await signInAnonymously(auth);
       } catch (error) {
         console.error("Auth Error:", error);
       }
